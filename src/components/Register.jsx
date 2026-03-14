@@ -8,7 +8,7 @@ function Register({ setUser }) {
     const [keywords, setKeywords] = useState("")
 
 
-    // 🎤 START LISTENING FOR KEYWORDS
+    
     const startListening = () => {
 
         const user = JSON.parse(localStorage.getItem("user"))
@@ -68,8 +68,8 @@ function Register({ setUser }) {
             body: JSON.stringify(data)
         })
 
-        // start listening after registration
-        startListening()
+        
+       startListening()
     }
 
 
