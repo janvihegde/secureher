@@ -8,12 +8,12 @@ function App() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user"))
   )
-  const [isListening, setIsListening] = useState(false)
+  const [isListening, setIsListening] = useState(true)
   const [transcript, setTranscript] = useState("")
   const [keywordAlert, setKeywordAlert] = useState("")
 
   const triggerEmergency = () => {
-    console.log("Emergency triggered!")
+    console.log("Emergency triggered")
     getLocation()
     startRecording()
   }
@@ -24,10 +24,11 @@ function App() {
         (position) => {
           const lat = position.coords.latitude
           const lng = position.coords.longitude
+          console.log("Location fetched", lat, lng)
           sendAlert(lat, lng)
         },
         (error) => {
-          console.error("Error getting location: ", error)
+          console.error("Location permission denied or error:", error)
         }
       )
     } else {
@@ -42,17 +43,14 @@ function App() {
 
   const sendAlert = async (lat, lng) => {
     try {
-      const response = await fetch("http://localhost:5000/alert", {
+      await fetch("http://localhost:5000/alert", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          lat: lat,
-          lng: lng
-        })
+        body: JSON.stringify({ lat, lng })
       })
-      console.log("Alert sent successfully")
+      console.log("Alert sent to backend")
     } catch (error) {
       console.error("Error sending alert:", error)
     }
