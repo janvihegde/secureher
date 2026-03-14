@@ -1,4 +1,5 @@
 import { useState } from "react"
+import logo from "../assets/logo.png"
 
 function Register({ setUser }) {
 
@@ -145,49 +146,54 @@ function Register({ setUser }) {
 
     return (
 
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-100 gap-6">
 
-            {/* Registration Form */}
+        <div className="flex flex-col items-center justify-center min-h-screen animated-bg">
+         
+            <img
+                src={logo}
+                alt="SecureHer Logo"
+                className="max-w-xs"
+            />
 
             <form
                 onSubmit={handleSubmit}
                 className="bg-white p-6 rounded-lg shadow-lg w-96"
             >
 
-                <h2 className="text-2xl font-bold mb-4">
+                <h2 className="text-xl font-bold mb-6 text-center ">
                     User Registration
                 </h2>
 
                 <input
-                    className="border p-2 w-full mb-3"
+                    className="border-b p-2 w-full mb-3"
                     placeholder="Name"
                     onChange={(e) => setName(e.target.value)}
                 />
 
                 <input
-                    className="border p-2 w-full mb-3"
+                    className="border-b p-2 w-full mb-3"
                     placeholder="Emergency Contacts (comma separated)"
                     onChange={(e) => setContacts(e.target.value)}
                 />
 
                 <input
-                    className="border p-2 w-full mb-3"
+                    className="border-b p-2 w-full mb-3 "
                     placeholder="SOS Keywords (help,danger)"
                     onChange={(e) => setKeywords(e.target.value)}
                 />
 
-                <button className="bg-red-500 text-white w-full p-2 rounded">
+                <button className="bg-[#C1536B] text-white w-full p-2 mt-5 rounded">
                     Register
                 </button>
 
             </form>
 
 
-            {/* SOS BUTTON */}
+           
 
             <button
                 onClick={handleSOS}
-                className="bg-red-700 text-white text-2xl px-12 py-4 rounded-full shadow-lg hover:bg-red-800"
+                className="bg-red-700 text-white text-2xl px-12 py-4 rounded-full shadow-lg hover:bg-red-800 mt-10 mb-10"
             >
                 🚨 SOS
             </button>
