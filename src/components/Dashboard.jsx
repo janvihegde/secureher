@@ -2,7 +2,70 @@ import CameraRecorder from "./CameraRecorder"
 import MapView from "./MapView"
 import logo from "../assets/logo.png"
 
+
 function Dashboard() {
+    const handleSOS = async () => {
+
+    const user = JSON.parse(localStorage.getItem("user"))
+
+    if (!user || !user.name || !user.emergencyContacts) {
+      alert("User not registered")
+      return
+    }
+
+    try {
+
+      navigator.geolocation.getCurrentPosition(async (position) => {
+
+        const location = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        }
+
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+
+        const recorder = new MediaRecorder(stream)
+
+        let chunks = []
+
+        recorder.ondataavailable = (event) => {
+          chunks.push(event.data)
+        }
+
+        recorder.start()
+
+        setTimeout(async () => {
+
+          recorder.stop()
+
+          const audioBlob = new Blob(chunks, { type: "audio/webm" })
+
+          const formData = new FormData()
+
+          formData.append("name", user.name)
+          formData.append("location", JSON.stringify(location))
+          formData.append("contacts", JSON.stringify(user.emergencyContacts))
+          formData.append("audio", audioBlob)
+
+          await fetch("http://localhost:5000/sos", {
+            method: "POST",
+            body: formData
+          })
+
+          alert("🚨 SOS alert sent successfully!")
+
+          stream.getTracks().forEach(track => track.stop())
+
+        }, 5000)
+
+      })
+
+    } catch (error) {
+      console.error(error)
+      alert("Error sending SOS")
+    }
+
+  }
     return (
         /* Added animated-bg and min-h-screen to match the Register page */
 
